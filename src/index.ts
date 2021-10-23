@@ -1,12 +1,13 @@
 import { ERC20 } from "./erc20";
 import { ERC721 } from "./erc721";
 import { DepositManager, RegistryContract, WithdrawManager } from "./contracts";
-import { BridgeClient, ExitUtil, ITransactionOption, MATIC_TOKEN_ADDRESS_ON_POLYGON, RootChain, TYPE_AMOUNT, Web3SideChainClient } from "@maticnetwork/maticjs";
+import { BridgeClient, ExitUtil, ITransactionOption, RootChain, TYPE_AMOUNT, Web3SideChainClient } from "@maticnetwork/maticjs";
 import { IPlasmaClientConfig, IPlasmaContracts } from "./interfaces";
+import { MATIC_TOKEN_ADDRESS_ON_POLYGON } from "./constant";
 
 export class PlasmaClient extends BridgeClient {
 
-    private client_: Web3SideChainClient;
+    private client_: Web3SideChainClient<IPlasmaClientConfig>;
 
     withdrawManager: WithdrawManager;
 
@@ -43,12 +44,12 @@ export class PlasmaClient extends BridgeClient {
 
             this.registry = new RegistryContract(
                 client,
-                client.config.registry,
+                config.registry,
             );
 
             this.depositManager = new DepositManager(
                 client,
-                client.config.depositManager
+                config.depositManager
             );
 
             this.exitUtil = new ExitUtil(
@@ -59,7 +60,7 @@ export class PlasmaClient extends BridgeClient {
 
             this.withdrawManager = new WithdrawManager(
                 client,
-                client.config.withdrawManager,
+                config.withdrawManager,
             );
 
             return this;

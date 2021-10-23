@@ -1,15 +1,15 @@
-import { IPlasmaContracts } from "./interfaces";
+import { IPlasmaClientConfig, IPlasmaContracts } from "./interfaces";
 import { BaseToken, promiseResolve, Web3SideChainClient, BaseContract, IContractInitParam, ITransactionOption } from "@maticnetwork/maticjs";
 import { ErcPredicate } from "./contracts";
 
-export class PlasmaToken extends BaseToken {
+export class PlasmaToken extends BaseToken<IPlasmaClientConfig> {
 
     private predicate_: BaseContract;
 
 
     constructor(
         contractParam_: IContractInitParam,
-        client: Web3SideChainClient,
+        client: Web3SideChainClient<IPlasmaClientConfig>,
         protected contracts_: IPlasmaContracts
     ) {
         super(contractParam_, client);

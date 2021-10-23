@@ -1,5 +1,6 @@
-import { TYPE_AMOUNT, Log_Event_Signature, Converter, Web3SideChainClient, ITransactionOption, MAX_AMOUNT, MATIC_TOKEN_ADDRESS_ON_POLYGON } from "@maticnetwork/maticjs";
-import { IPlasmaContracts } from "./interfaces";
+import { TYPE_AMOUNT, Log_Event_Signature, Converter, Web3SideChainClient, ITransactionOption, MAX_AMOUNT } from "@maticnetwork/maticjs";
+import { MATIC_TOKEN_ADDRESS_ON_POLYGON } from "./constant";
+import { IPlasmaClientConfig, IPlasmaContracts } from "./interfaces";
 import { PlasmaToken } from "./plasma_token";
 
 export class ERC20 extends PlasmaToken {
@@ -7,7 +8,7 @@ export class ERC20 extends PlasmaToken {
     constructor(
         tokenAddress: string,
         isParent: boolean,
-        client: Web3SideChainClient,
+        client: Web3SideChainClient<IPlasmaClientConfig>,
         contracts: IPlasmaContracts
     ) {
         super({

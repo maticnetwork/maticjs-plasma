@@ -1,9 +1,10 @@
 import { BaseToken, ITransactionOption, BaseContractMethod, Web3SideChainClient } from "@maticnetwork/maticjs";
+import { IPlasmaClientConfig } from "../interfaces";
 
 
-export class WithdrawManager extends BaseToken {
+export class WithdrawManager extends BaseToken<IPlasmaClientConfig> {
 
-    constructor(client: Web3SideChainClient, address: string) {
+    constructor(client: Web3SideChainClient<IPlasmaClientConfig>, address: string) {
         super(
             {
                 isParent: true,

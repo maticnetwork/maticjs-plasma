@@ -1,5 +1,5 @@
 import { Converter, ITransactionOption, Log_Event_Signature, Web3SideChainClient } from "@maticnetwork/maticjs";
-import { IPlasmaContracts } from "./interfaces";
+import { IPlasmaClientConfig, IPlasmaContracts } from "./interfaces";
 import { PlasmaToken } from "./plasma_token";
 
 export class ERC721 extends PlasmaToken {
@@ -7,7 +7,7 @@ export class ERC721 extends PlasmaToken {
     constructor(
         tokenAddress: string,
         isParent: boolean,
-        client: Web3SideChainClient,
+        client: Web3SideChainClient<IPlasmaClientConfig>,
         contracts: IPlasmaContracts
 
     ) {
