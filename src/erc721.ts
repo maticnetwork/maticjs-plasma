@@ -65,7 +65,7 @@ export class ERC721 extends PlasmaToken {
      * @param options 
      */
     safeDeposit(tokenId: string | number, userAddress: string, options?: ITransactionOption) {
-        this.checkForRoot_("safeDeposit");
+        this.checkForRoot("safeDeposit");
 
         return this.getContract().then(contract => {
             const method = contract.method(
@@ -80,7 +80,7 @@ export class ERC721 extends PlasmaToken {
     }
 
     withdrawStart(tokenId: string | number, options: ITransactionOption = {}) {
-        this.checkForChild_("withdrawStart");
+        this.checkForChild("withdrawStart");
 
 
         return this.getContract().then(contract => {
@@ -102,7 +102,7 @@ export class ERC721 extends PlasmaToken {
 
 
     private withdrawChallenge_(burnTxHash: string, isFast: boolean, option: ITransactionOption) {
-        this.checkForRoot_("withdrawChallenge");
+        this.checkForRoot("withdrawChallenge");
 
         return Promise.all([
             this.getPredicate(),
@@ -131,7 +131,7 @@ export class ERC721 extends PlasmaToken {
     }
 
     transfer(tokenId: string, from: string, to: string, option?: ITransactionOption) {
-        return this.transferERC721_(
+        return this.transferERC721(
             from,
             to,
             tokenId,

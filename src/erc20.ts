@@ -44,7 +44,7 @@ export class ERC20 extends PlasmaToken {
      * @memberof ERC20
      */
     getAllowance(userAddress: string, option?: ITransactionOption) {
-        this.checkForRoot_("getAllowance");
+        this.checkForRoot("getAllowance");
 
         return this.getContract().then(contract => {
             const method = contract.method(
@@ -57,7 +57,7 @@ export class ERC20 extends PlasmaToken {
     }
 
     approve(amount: TYPE_AMOUNT, option: ITransactionOption = {}) {
-        this.checkForRoot_("approve");
+        this.checkForRoot("approve");
         return this.getContract().then(contract => {
             const method = contract.method(
                 "approve",
@@ -77,7 +77,7 @@ export class ERC20 extends PlasmaToken {
     }
 
     deposit(amount: TYPE_AMOUNT, userAddress: string, option: ITransactionOption = {}) {
-        this.checkForRoot_("deposit");
+        this.checkForRoot("deposit");
 
         return this.contracts_.depositManager.getContract().then(contract => {
             const method = contract.method(
@@ -91,7 +91,7 @@ export class ERC20 extends PlasmaToken {
     }
 
     private depositEther__(amount: TYPE_AMOUNT, option: ITransactionOption = {}) {
-        this.checkForRoot_("depositEther");
+        this.checkForRoot("depositEther");
 
         return this.contracts_.depositManager.getContract().then(contract => {
             option.value = Converter.toHex(amount);
@@ -103,7 +103,7 @@ export class ERC20 extends PlasmaToken {
     }
 
     withdrawStart(amount: TYPE_AMOUNT, option?: ITransactionOption) {
-        this.checkForChild_("withdrawStart");
+        this.checkForChild("withdrawStart");
 
 
         return this.getContract().then(tokenContract => {
@@ -116,7 +116,7 @@ export class ERC20 extends PlasmaToken {
     }
 
     private withdrawChallenge_(burnTxHash: string, isFast: boolean, option: ITransactionOption) {
-        this.checkForRoot_("withdrawChallenge");
+        this.checkForRoot("withdrawChallenge");
 
         return Promise.all([
             this.getPredicate(),
@@ -147,7 +147,7 @@ export class ERC20 extends PlasmaToken {
         if (this.contractParam.address === MATIC_TOKEN_ADDRESS_ON_POLYGON) {
             option.to = to;
         }
-        return this.transferERC20_(to, amount, option);
+        return this.transferERC20(to, amount, option);
     }
 
 

@@ -5,9 +5,7 @@ import { BridgeClient, ExitUtil, ITransactionOption, RootChain, TYPE_AMOUNT, Web
 import { IPlasmaClientConfig, IPlasmaContracts } from "./interfaces";
 import { MATIC_TOKEN_ADDRESS_ON_POLYGON } from "./constant";
 
-export class PlasmaClient extends BridgeClient {
-
-    private client_: Web3SideChainClient<IPlasmaClientConfig>;
+export class PlasmaClient extends BridgeClient<IPlasmaClientConfig> {
 
     withdrawManager: WithdrawManager;
 
@@ -17,12 +15,11 @@ export class PlasmaClient extends BridgeClient {
 
 
     constructor(config: IPlasmaClientConfig) {
-        super();
-        this.client_ = new Web3SideChainClient(config);
+        super(config);
     }
 
     init() {
-        const client = this.client_;
+        const client = this.client;
         let config: IPlasmaClientConfig = client.config;
 
         return client.init().then(_ => {
@@ -83,7 +80,7 @@ export class PlasmaClient extends BridgeClient {
         return new ERC20(
             tokenAddress,
             isParent,
-            this.client_,
+            this.client,
             this.getContracts__()
         );
     }
@@ -92,7 +89,7 @@ export class PlasmaClient extends BridgeClient {
         return new ERC721(
             tokenAddress,
             isParent,
-            this.client_,
+            this.client,
             this.getContracts__()
         );
     }
@@ -105,7 +102,7 @@ export class PlasmaClient extends BridgeClient {
 
     depositEther(amount: TYPE_AMOUNT, option: ITransactionOption) {
         return new ERC20(
-            '', true, this.client_,
+            '', true, this.client,
             this.getContracts__()
         )['depositEther__'](amount, option);
     }
