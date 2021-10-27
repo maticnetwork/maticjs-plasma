@@ -1,13 +1,16 @@
-const { PlasmaClient, use, } = require("@maticnetwork/maticjs");
+const { use } = require("@maticnetwork/maticjs");
 const { Web3ClientPlugin } = require("@maticnetwork/maticjs-web3");
+const { PlasmaClient } = require("@maticnetwork/maticjs-plasma");
 
 const HDWalletProvider = require("@truffle/hdwallet-provider");
-const { user1, plasma, rpc } = require("./config");
+const { user1, rpc, plasma } = require("./config");
 use(Web3ClientPlugin);
 const from = user1.address;
 
 const execute = async () => {
   const privateKey = user1.privateKey;
+  const mumbaiERC20 = plasma.child.erc20;
+  const goerliERC20 = plasma.parent.erc20;
 
   const client = new PlasmaClient({
     log: true,
@@ -31,24 +34,28 @@ const execute = async () => {
   await client.init();
   console.log("init called");
 
-  // const mumbaiERC720Token = client.erc721('0x33fc58f12a56280503b04ac7911d1eceebce179c');
-  const goerliERC20Token = client.erc20(plasma.parent.erc20, true);
+  const mumbaiERC20Token = client.erc20(mumbaiERC20);
+  const goerliERC20Token = client.erc20(goerliERC20, true);
 
-  return console.log(await goerliERC20Token.getBalance(from));
+  // return console.log(await client.isDeposited('0xc67599f5c967f2040786d5924ec55d37bf943c009bdd23f3b50e5ae66efde258'));
 
 
-  // const balance = await mumbaiERC720Token.getBalance(
-  //   from
-  // );
-  // return console.log("balance", balance);
+  const balance = await mumbaiERC20Token.getBalance(
+    from
+  );
+  return console.log("balance", balance);
 
   // const tokens = await goerliERC720Token.getAllTokens(
   //   from
   // );
   // return console.log("tokens", tokens);
 
-  // const tx = await goerliERC720Token.safeDeposit(104, from);
-  // // const tx = await goerliERC720Token.withdrawChallenge('0x454f159823351b24ce0e675e7b308cc8c7ba39e175059a4d2b8f9507c17b5133');
+  const tx = await goerliERC20Token.deposit(10, from, {
+    returnTransaction: true
+  });
+  console.log('tx', tx);
+  // // setProofApi("https://apis.matic.network")
+  // // const tx = await goerliERC20Token.withdrawExit('0xd6f7f4c6052611761946519076de28fbd091693af974e7d4abc1b17fd7926fd7');
   // console.log("txHash", await tx.getTransactionHash());
   // console.log("txReceipt", await tx.getReceipt());
 

@@ -149,7 +149,4 @@ export class ERC20 extends PlasmaToken {
         }
         return this.transferERC20(to, amount, option);
     }
-
-
-
 }
