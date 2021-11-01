@@ -1,0 +1,48 @@
+{
+  "name": "@maticnetwork/maticjs-plasma",
+  "version": "0.1.0",
+  "description": "Plasma bridge plugin for maticjs. It provides PlasmaClient to interact with plasma bridge.",
+  "main": "dist/npm.export.js",
+  "types": "dist/ts/index.d.ts",
+  "scripts": {
+    "un:matic": "npm un @maticnetwork/maticjs",
+    "install:matic": "npm i ../matic.js/maticnetwork-maticjs-3.0.0-beta.4.tgz --no-save",
+    "build": "npm run build:dev",
+    "build:link": "npm run build && npm link",
+    "build:webpack": "npm run lint && webpack --config webpack/webpack.node.config.js",
+    "build:pack": "npm run build:dev && npm pack",
+    "build:dev": "cross-env NODE_ENV=development npm run build:webpack",
+    "build:prod": "cross-env NODE_ENV=production npm run build:webpack",
+    "deploy": "npm run build:dev && npm run build:prod",
+    "prepublishOnly": "npm run deploy",
+    "lint": "tslint src/**/*.ts",
+    "lint:fix": "tslint src/**/*.ts --fix",
+    "test": "npm run build:pack && cd test && npm run install:lib:test",
+    "debug": "npm run build:pack && cd test && npm run install:lib:debug"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maticnetwork/maticjs-plasma.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/maticnetwork/maticjs-plasma/issues"
+  },
+  "homepage": "https://github.com/maticnetwork/maticjs-plasma#readme",
+  "peerDependencies": {
+    "@maticnetwork/maticjs": "^3.0.0-beta.9"
+  },
+  "devDependencies": {
+    "@maticnetwork/maticjs": "^3.0.0-beta.9",
+    "copy-webpack-plugin": "^6.1.1",
+    "cross-env": "^7.0.3",
+    "ts-loader": "^7.0.1",
+    "tslint": "^6.1.3",
+    "typescript": "^3.8.3",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^4.2.0",
+    "webpack-merge": "^4.2.2"
+  },
+  "dependencies": {}
+}
