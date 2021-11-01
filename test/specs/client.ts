@@ -17,6 +17,8 @@ export const erc721 = {
     child: plasma.child.erc721
 }
 
+console.log('from', from, from.length, privateKey.length);
+
 export const plasmaClient = new PlasmaClient({
     // log: true,
     network: 'testnet',
