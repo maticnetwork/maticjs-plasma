@@ -40,24 +40,24 @@ const execute = async () => {
   // return console.log(await client.isDeposited('0xc67599f5c967f2040786d5924ec55d37bf943c009bdd23f3b50e5ae66efde258'));
 
 
-  const balance = await mumbaiERC20Token.getBalance(
-    from
-  );
-  return console.log("balance", balance);
+  // const balance = await mumbaiERC20Token.getBalance(
+  //   from
+  // );
+  // return console.log("balance", balance);
 
   // const tokens = await goerliERC720Token.getAllTokens(
   //   from
   // );
   // return console.log("tokens", tokens);
 
-  const tx = await goerliERC20Token.deposit(10, from, {
-    returnTransaction: true
-  });
-  console.log('tx', tx);
+  // const tx = await goerliERC20Token.deposit(10, from, {
+  //   // returnTransaction: true
+  // });
+  // console.log('tx', tx);
   // // setProofApi("https://apis.matic.network")
-  // // const tx = await goerliERC20Token.withdrawExit('0xd6f7f4c6052611761946519076de28fbd091693af974e7d4abc1b17fd7926fd7');
-  // console.log("txHash", await tx.getTransactionHash());
-  // console.log("txReceipt", await tx.getReceipt());
+  const tx = await mumbaiERC20Token.withdrawStart(10);
+  console.log("txHash", await tx.getTransactionHash());
+  console.log("txReceipt", await tx.getReceipt());
 
   //txhash to plasma exit - 0x63aa095e0d6ee8698399b871daa202eb5522933e2d94c5929cf0fb86b6b0c628
   const tokenId = '60399350241383852757821046101235634991156913804166740995010931519407953501076'

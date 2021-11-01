@@ -145,7 +145,7 @@ export class ERC20 extends PlasmaToken {
         return this.withdrawChallenge_(burnTxHash, true, option);
     }
 
-    transfer(to: string, amount: TYPE_AMOUNT, option: ITransactionOption = {}) {
+    transfer(amount: TYPE_AMOUNT, to: string, option: ITransactionOption = {}) {
         if (this.contractParam.address === MATIC_TOKEN_ADDRESS_ON_POLYGON) {
             option.to = to;
         }

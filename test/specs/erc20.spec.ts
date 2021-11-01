@@ -1,14 +1,21 @@
-import { erc20, from, plasmaClient, to } from "./client";
+import { erc20, from, plasmaClient, plasmaClientTo, to } from "./client";
 import { expect } from 'chai'
 import BN from "bn.js";
+import { setProofApi, ABIManager } from "@maticnetwork/maticjs";
 
 
 describe('ERC20', () => {
 
     let erc20Child = plasmaClient.erc20(erc20.child);
     let erc20Parent = plasmaClient.erc20(erc20.parent, true);
+
+    const abiManager = new ABIManager("testnet", "mumbai");
+
     before(() => {
-        return plasmaClient.init();
+        return Promise.all([
+            plasmaClient.init(),
+            abiManager.init()
+        ]);
     });
 
     it('get balance child', async () => {
@@ -38,27 +45,9 @@ describe('ERC20', () => {
         expect(isCheckPointed).to.be.an('boolean').equal(true);
     })
 
-    it('child transfer returnTransaction with erp1159', async () => {
-        const amount = 10;
-        try {
-            const result = await erc20Child.transfer(to, amount, {
-                maxFeePerGas: 10,
-                maxPriorityFeePerGas: 10,
-                returnTransaction: true
-            });
-            console.log('result', result);
-        } catch (error) {
-            console.log('error', error);
-            expect(error).deep.equal({
-                message: `Child chain doesn't support eip-1559`,
-                type: 'eip-1559_not_supported'
-            })
-        }
-    });
-
     it('child transfer returnTransaction', async () => {
         const amount = 10;
-        const result = await erc20Child.transfer(to, amount, {
+        const result = await erc20Child.transfer(amount, to, {
             returnTransaction: true
         });
         console.log('result', result);
@@ -70,7 +59,7 @@ describe('ERC20', () => {
 
     it('parent transfer returnTransaction with erp1159', async () => {
         const amount = 10;
-        const result = await erc20Parent.transfer(to, amount, {
+        const result = await erc20Parent.transfer(amount, to, {
             maxFeePerGas: 20,
             maxPriorityFeePerGas: 20,
             returnTransaction: true
@@ -84,21 +73,92 @@ describe('ERC20', () => {
 
     });
 
-    // it('isDeposited', async () => {
-    //     const txHash = '0xc67599f5c967f2040786d5924ec55d37bf943c009bdd23f3b50e5ae66efde258';
-    //     const isExited = await posClient.isDeposited(txHash);
-    //     expect(isExited).to.be.an('boolean').equal(true);
-    // })
+    it('isDeposited', async () => {
+        const txHash = '0xc3245a99dfbf2cf91d92ad535de9ee828208f0be3c0e101cba14d88e7849ed01';
+        const isExited = await plasmaClient.isDeposited(txHash);
+        expect(isExited).to.be.an('boolean').equal(true);
+    })
+
+    it('withdrawstart return tx', async () => {
+        const result = await erc20Child.withdrawStart('10', {
+            returnTransaction: true
+        });
+        expect(result['to'].toLowerCase()).equal(erc20.child.toLowerCase());
+        expect(result).to.have.property('data')
+    });
+
+    it('approve return tx', async () => {
+        const result = await erc20Parent.approve('10', {
+            returnTransaction: true
+        });
+
+        expect(result['to'].toLowerCase()).equal(erc20.parent.toLowerCase());
+        expect(result).to.have.property('data')
+
+    });
+
+    it('deposit return tx', async () => {
+        const result = await erc20Parent.deposit(10, from, {
+            returnTransaction: true
+        });
+
+        const depositManager = await abiManager.getConfig("Main.Contracts.DepositManagerProxy")
+        expect(result['to'].toLowerCase()).equal(depositManager.toLowerCase());
+    });
+
+    it('withdrawChallenge return tx', async () => {
+        const result = await erc20Parent.withdrawChallenge('0xfb1c50b5c6cba34031312e67cead610777fe609d08010d1e618d1f38a0a80748', {
+            returnTransaction: true
+        });
+
+        const erc20Predicate = await abiManager.getConfig("Main.Contracts.ERC20Predicate")
+        expect(result['to'].toLowerCase()).equal(erc20Predicate.toLowerCase());
+    });
+
+    it('withdrawChallengeFaster return tx without setProofAPI', async () => {
+        try {
+            const result = await erc20Parent.withdrawChallengeFaster('0xfb1c50b5c6cba34031312e67cead610777fe609d08010d1e618d1f38a0a80748', {
+                returnTransaction: true
+            });
+            throw new Error("there should be exception");
+        } catch (error) {
+            expect(error).deep.equal({
+                message: `Proof api is not set, please set it using "setProofApi"`,
+                type: 'proof_api_not_set'
+            })
+        }
+    });
+
+    it('withdrawChallengeFaster return tx', async () => {
+        setProofApi("https://apis.matic.network");
+        const result = await erc20Parent.withdrawChallengeFaster('0xfb1c50b5c6cba34031312e67cead610777fe609d08010d1e618d1f38a0a80748', {
+            returnTransaction: true
+        });
+
+        const erc20Predicate = await abiManager.getConfig("Main.Contracts.ERC20Predicate")
+
+        expect(result['to'].toLowerCase()).equal(erc20Predicate.toLowerCase());
+    });
+
+    it('withdrawExit return tx', async () => {
+        const result = await erc20Parent.withdrawExit({
+            returnTransaction: true
+        });
+
+        const withdrawManagerProxy = await abiManager.getConfig("Main.Contracts.WithdrawManagerProxy")
+        expect(result['to'].toLowerCase()).equal(withdrawManagerProxy.toLowerCase());
+    });
+
 
     it('child transfer', async () => {
         const oldBalance = await erc20Child.getBalance(to);
         console.log('oldBalance', oldBalance);
         const amount = 10;
-        const result = await erc20Child.transfer(to, amount);
-        const txHash = await result.getTransactionHash();
+        let result = await erc20Child.transfer(amount, to);
+        let txHash = await result.getTransactionHash();
         expect(txHash).to.be.an('string');
         console.log('txHash', txHash);
-        const txReceipt = await result.getReceipt();
+        let txReceipt = await result.getReceipt();
         console.log("txReceipt", txReceipt);
 
         expect(txReceipt.transactionHash).equal(txHash);
@@ -126,6 +186,14 @@ describe('ERC20', () => {
         expect(newBalanceBig.toString()).equal(
             oldBalanceBig.add(new BN(amount)).toString()
         )
+
+        //transfer money back to user
+        await plasmaClientTo.init();
+        const erc20ChildToken = plasmaClientTo.erc20(erc20.child);
+
+        result = await erc20ChildToken.transfer(amount, to);
+        txHash = await result.getTransactionHash();
+        txReceipt = await result.getReceipt();
     });
 
     if (process.env.NODE_ENV !== 'test_all') return;
