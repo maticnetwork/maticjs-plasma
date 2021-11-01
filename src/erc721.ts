@@ -33,6 +33,8 @@ export class ERC721 extends PlasmaToken {
                 userAddress
             );
             return this.processRead<number>(method, options);
+        }).then(count => {
+            return Number(count);
         });
     }
 
