@@ -19,38 +19,48 @@ export const erc721 = {
 
 console.log('from', from, from.length, privateKey.length);
 
-export const plasmaClient = new PlasmaClient({
-    // log: true,
-    network: 'testnet',
-    version: 'mumbai',
-    parent: {
-        provider: new HDWalletProvider(privateKey, rpc.parent),
-        defaultConfig: {
-            from
-        }
-    },
-    child: {
-        provider: new HDWalletProvider(privateKey, rpc.child),
-        defaultConfig: {
-            from
-        }
-    }
-});
+export let plasmaClient;
+try {
 
-export const plasmaClientTo = new PlasmaClient({
-    // log: true,
-    network: 'testnet',
-    version: 'mumbai',
-    parent: {
-        provider: new HDWalletProvider(toPrivateKey, rpc.parent),
-        defaultConfig: {
-            from:to
+    plasmaClient = new PlasmaClient({
+        // log: true,
+        network: 'testnet',
+        version: 'mumbai',
+        parent: {
+            provider: new HDWalletProvider(privateKey, rpc.parent),
+            defaultConfig: {
+                from
+            }
+        },
+        child: {
+            provider: new HDWalletProvider(privateKey, rpc.child),
+            defaultConfig: {
+                from
+            }
         }
-    },
-    child: {
-        provider: new HDWalletProvider(toPrivateKey, rpc.child),
-        defaultConfig: {
-            from:to
+    });
+} catch (error) {
+    console.error("error unable to initiate plasmaClient", error);
+}
+export let plasmaClientTo
+try {
+    plasmaClientTo = new PlasmaClient({
+        // log: true,
+        network: 'testnet',
+        version: 'mumbai',
+        parent: {
+            provider: new HDWalletProvider(toPrivateKey, rpc.parent),
+            defaultConfig: {
+                from: to
+            }
+        },
+        child: {
+            provider: new HDWalletProvider(toPrivateKey, rpc.child),
+            defaultConfig: {
+                from: to
+            }
         }
-    }
-});
+    });
+} catch (error) {
+    console.error("error unable to initiate plasmaClientTo", error);
+}
