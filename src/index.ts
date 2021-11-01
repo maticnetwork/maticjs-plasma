@@ -11,7 +11,6 @@ export class PlasmaClient extends BridgeClient<IPlasmaClientConfig> {
 
     depositManager: DepositManager;
     registry: RegistryContract;
-    rootChain: RootChain;
 
 
     constructor(config: IPlasmaClientConfig) {
@@ -34,7 +33,7 @@ export class PlasmaClient extends BridgeClient<IPlasmaClientConfig> {
                 config
             );
 
-            this.rootChain = new RootChain(
+            const rootChain = new RootChain(
                 client,
                 config.rootChain
             );
@@ -50,9 +49,8 @@ export class PlasmaClient extends BridgeClient<IPlasmaClientConfig> {
             );
 
             this.exitUtil = new ExitUtil(
-                client.child,
-                this.rootChain,
-                config.requestConcurrency
+                client,
+                rootChain
             );
 
             this.withdrawManager = new WithdrawManager(
@@ -64,7 +62,7 @@ export class PlasmaClient extends BridgeClient<IPlasmaClientConfig> {
         });
     }
 
-    private getContracts__() {
+    private getContracts_() {
         return {
             depositManager: this.depositManager,
             exitUtil: this.exitUtil,
@@ -81,7 +79,7 @@ export class PlasmaClient extends BridgeClient<IPlasmaClientConfig> {
             tokenAddress,
             isParent,
             this.client,
-            this.getContracts__()
+            this.getContracts_.bind(this)
         );
     }
 
@@ -90,7 +88,7 @@ export class PlasmaClient extends BridgeClient<IPlasmaClientConfig> {
             tokenAddress,
             isParent,
             this.client,
-            this.getContracts__()
+            this.getContracts_.bind(this)
         );
     }
 
@@ -103,7 +101,7 @@ export class PlasmaClient extends BridgeClient<IPlasmaClientConfig> {
     depositEther(amount: TYPE_AMOUNT, option: ITransactionOption) {
         return new ERC20(
             '', true, this.client,
-            this.getContracts__()
+            this.getContracts_.bind(this)
         )['depositEther__'](amount, option);
     }
 

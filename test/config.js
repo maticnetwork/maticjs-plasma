@@ -28,5 +28,7 @@ module.exports = {
     },
     user2: {
         address: process.env.USER2_FROM, // Your address
+        "privateKey": process.env.USER2_PRIVATE_KEY,
+
     },
 }

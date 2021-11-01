@@ -8,7 +8,7 @@ export class ERC721 extends PlasmaToken {
         tokenAddress: string,
         isParent: boolean,
         client: Web3SideChainClient<IPlasmaClientConfig>,
-        contracts: IPlasmaContracts
+        contracts: () => IPlasmaContracts
 
     ) {
         super({
@@ -71,7 +71,7 @@ export class ERC721 extends PlasmaToken {
             const method = contract.method(
                 "safeTransferFrom",
                 userAddress,
-                this.contracts_.depositManager.address,
+                this.getHelperContracts().depositManager.address,
                 tokenId,
             );
 
@@ -93,7 +93,7 @@ export class ERC721 extends PlasmaToken {
     }
 
     getPredicate() {
-        return this.getPredicate_(
+        return this.fetchPredicate(
             "erc721Predicate",
             "ERC721Predicate",
             this.client.config.erc721Predicate
@@ -106,7 +106,7 @@ export class ERC721 extends PlasmaToken {
 
         return Promise.all([
             this.getPredicate(),
-            this.contracts_.exitUtil.buildPayloadForExit(
+            this.getHelperContracts().exitUtil.buildPayloadForExit(
                 burnTxHash,
                 Log_Event_Signature.PlasmaErc721WithdrawEventSig,
                 isFast

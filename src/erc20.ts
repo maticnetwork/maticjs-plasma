@@ -9,7 +9,7 @@ export class ERC20 extends PlasmaToken {
         tokenAddress: string,
         isParent: boolean,
         client: Web3SideChainClient<IPlasmaClientConfig>,
-        contracts: IPlasmaContracts
+        contracts: () => IPlasmaContracts
     ) {
         super({
             isParent,
@@ -19,8 +19,10 @@ export class ERC20 extends PlasmaToken {
     }
 
     getPredicate() {
-        return this['getPredicate_'](
-            "erc20Predicate", "ERC20Predicate", this.client.config.erc20Predicate
+        return this.fetchPredicate(
+            "erc20Predicate",
+            "ERC20Predicate",
+            this.client.config.erc20Predicate
         );
     }
 
@@ -50,7 +52,7 @@ export class ERC20 extends PlasmaToken {
             const method = contract.method(
                 "allowance",
                 userAddress,
-                this.contracts_.depositManager.address,
+                this.getHelperContracts().depositManager.address,
             );
             return this.processRead<string>(method, option);
         });
@@ -61,7 +63,7 @@ export class ERC20 extends PlasmaToken {
         return this.getContract().then(contract => {
             const method = contract.method(
                 "approve",
-                this.contracts_.depositManager.address,
+                this.getHelperContracts().depositManager.address,
                 Converter.toHex(amount)
             );
             return this.processWrite(method, option);
@@ -79,7 +81,7 @@ export class ERC20 extends PlasmaToken {
     deposit(amount: TYPE_AMOUNT, userAddress: string, option: ITransactionOption = {}) {
         this.checkForRoot("deposit");
 
-        return this.contracts_.depositManager.getContract().then(contract => {
+        return this.getHelperContracts().depositManager.getContract().then(contract => {
             const method = contract.method(
                 "depositERC20ForUser",
                 this.contractParam.address,
@@ -90,10 +92,10 @@ export class ERC20 extends PlasmaToken {
         });
     }
 
-    private depositEther__(amount: TYPE_AMOUNT, option: ITransactionOption = {}) {
+    private depositEther_(amount: TYPE_AMOUNT, option: ITransactionOption = {}) {
         this.checkForRoot("depositEther");
 
-        return this.contracts_.depositManager.getContract().then(contract => {
+        return this.getHelperContracts().depositManager.getContract().then(contract => {
             option.value = Converter.toHex(amount);
             const method = contract.method(
                 "depositEther",
@@ -120,7 +122,7 @@ export class ERC20 extends PlasmaToken {
 
         return Promise.all([
             this.getPredicate(),
-            this.contracts_.exitUtil.buildPayloadForExit(
+            this.getHelperContracts().exitUtil.buildPayloadForExit(
                 burnTxHash,
                 Log_Event_Signature.PlasmaErc20WithdrawEventSig,
                 isFast

@@ -10,12 +10,12 @@ export class PlasmaToken extends BaseToken<IPlasmaClientConfig> {
     constructor(
         contractParam_: IContractInitParam,
         client: Web3SideChainClient<IPlasmaClientConfig>,
-        protected contracts_: IPlasmaContracts
+        protected getHelperContracts: () => IPlasmaContracts
     ) {
         super(contractParam_, client);
     }
 
-    protected getPredicate_(methodName: string, contractName: string, predicateAddress: string): Promise<BaseContract> {
+    protected fetchPredicate(methodName: string, contractName: string, predicateAddress: string): Promise<BaseContract> {
         if (this.predicate_) {
             return promiseResolve(this.predicate_);
         }
@@ -23,13 +23,13 @@ export class PlasmaToken extends BaseToken<IPlasmaClientConfig> {
             if (predicateAddress) {
                 return promiseResolve<string>(predicateAddress);
             }
-            return this.contracts_.registry.getContract().then(contract => {
+            return this.getHelperContracts().registry.getContract().then(contract => {
                 return contract.method(
                     methodName
                 ).read<string>();
             });
         };
-        getPredicateAddress().then(address => {
+        return getPredicateAddress().then(address => {
             return new ErcPredicate(
                 this.client,
                 address,
@@ -42,7 +42,7 @@ export class PlasmaToken extends BaseToken<IPlasmaClientConfig> {
     }
 
     withdrawExit(option?: ITransactionOption) {
-        return this.contracts_.withdrawManager.withdrawExit(
+        return this.getHelperContracts().withdrawManager.withdrawExit(
             this.contractParam.address, option
         );
     }
