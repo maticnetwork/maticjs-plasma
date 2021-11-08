@@ -32,10 +32,10 @@
   },
   "homepage": "https://github.com/maticnetwork/maticjs-plasma#readme",
   "peerDependencies": {
-    "@maticnetwork/maticjs": "^3.0.0-beta.9"
+    "@maticnetwork/maticjs": "^3.0.0-beta.15"
   },
   "devDependencies": {
-    "@maticnetwork/maticjs": "^3.0.0-beta.9",
+    "@maticnetwork/maticjs": "^3.0.0-beta.15",
     "copy-webpack-plugin": "^6.1.1",
     "cross-env": "^7.0.3",
     "ts-loader": "^7.0.1",
