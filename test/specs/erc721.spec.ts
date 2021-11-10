@@ -44,6 +44,11 @@ describe('ERC721', () => {
         expect(allTokens).to.be.an('array').length(tokensCount);
     })
 
+    it('isDeposited', async () => {
+        const isDeposited = await plasmaClient.isDeposited("0x041fd0e39d523b78aaeea92638f076b3d51fec5f587e0eebdfa2e0e11025c610");
+        expect(isDeposited).equal(true);
+    })
+
     // it('withdrawChallenge return tx', async () => {
     //     const result = await erc721Parent.withdrawChallenge('0x41162584974896bfc96d91e7ce72009373cd31acabe92024950831ee7b8067c0', {
     //         returnTransaction: true
@@ -79,6 +84,11 @@ describe('ERC721', () => {
         console.log('allTokensTo', allTokensTo);
 
         const targetToken = allTokensFrom[0];
+
+        if (!targetToken) {
+            throw new Error("no tokens is available for user to transfer");
+        }
+
         let result = await erc721Child.transfer(targetToken, from, to);
 
         let txHash = await result.getTransactionHash();
@@ -89,7 +99,7 @@ describe('ERC721', () => {
 
         expect(txReceipt.transactionHash).equal(txHash);
         expect(txReceipt).to.be.an('object');
-        expect(txReceipt.from).equal(from);
+        expect(txReceipt.from.toLowerCase()).equal(from.toLowerCase());
         expect(txReceipt.to.toLowerCase()).equal(erc721.child.toLowerCase());
         expect(txReceipt.type).equal('0x0');
         expect(txReceipt.gasUsed).to.be.an('number').gt(0);

@@ -19,7 +19,7 @@ export const erc721 = {
 
 console.log('from', from, from.length, privateKey.length);
 
-export let plasmaClient;
+export let plasmaClient: PlasmaClient;
 try {
 
     plasmaClient = new PlasmaClient({

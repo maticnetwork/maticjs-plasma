@@ -54,7 +54,7 @@ describe('ERC20', () => {
         expect(result).to.have.not.property('maxFeePerGas')
         expect(result).to.have.not.property('maxPriorityFeePerGas')
         expect(result).to.have.property('gasPrice')
-        expect(result).to.have.property('chainId', '0x13881');
+        expect(result).to.have.property('chainId', 80001);
     });
 
     it('parent transfer returnTransaction with erp1159', async () => {
@@ -69,7 +69,7 @@ describe('ERC20', () => {
         expect(result).to.have.property('maxFeePerGas', 20)
         expect(result).to.have.property('maxPriorityFeePerGas', 20)
         expect(result).to.have.not.property('gasPrice')
-        expect(result).to.have.property('chainId', '0x5');
+        expect(result).to.have.property('chainId', 5);
 
     });
 
@@ -107,7 +107,7 @@ describe('ERC20', () => {
     });
 
     it('withdrawChallenge return tx', async () => {
-        const result = await erc20Parent.withdrawChallenge('0xfb1c50b5c6cba34031312e67cead610777fe609d08010d1e618d1f38a0a80748', {
+        const result = await erc20Parent.withdrawChallenge('0x95a6fd305456db15c431c5c4f082cf233cfeb0d4039bcf1d4cd713796fae0d2f', {
             returnTransaction: true
         });
 
@@ -115,23 +115,9 @@ describe('ERC20', () => {
         expect(result['to'].toLowerCase()).equal(erc20Predicate.toLowerCase());
     });
 
-    it('withdrawChallengeFaster return tx without setProofAPI', async () => {
-        try {
-            const result = await erc20Parent.withdrawChallengeFaster('0xfb1c50b5c6cba34031312e67cead610777fe609d08010d1e618d1f38a0a80748', {
-                returnTransaction: true
-            });
-            throw new Error("there should be exception");
-        } catch (error) {
-            expect(error).deep.equal({
-                message: `Proof api is not set, please set it using "setProofApi"`,
-                type: 'proof_api_not_set'
-            })
-        }
-    });
-
     it('withdrawChallengeFaster return tx', async () => {
         setProofApi("https://apis.matic.network");
-        const result = await erc20Parent.withdrawChallengeFaster('0xfb1c50b5c6cba34031312e67cead610777fe609d08010d1e618d1f38a0a80748', {
+        const result = await erc20Parent.withdrawChallengeFaster('0x95a6fd305456db15c431c5c4f082cf233cfeb0d4039bcf1d4cd713796fae0d2f', {
             returnTransaction: true
         });
 
@@ -163,7 +149,7 @@ describe('ERC20', () => {
 
         expect(txReceipt.transactionHash).equal(txHash);
         expect(txReceipt).to.be.an('object');
-        expect(txReceipt.from).equal(from);
+        expect(txReceipt.from.toLowerCase()).equal(from.toLowerCase());
         expect(txReceipt.to.toLowerCase()).equal(erc20.child.toLowerCase());
         expect(txReceipt.type).equal('0x0');
         expect(txReceipt.gasUsed).to.be.an('number').gt(0);
