@@ -1,17 +1,12 @@
-const { getMaticPlasmaClient, from } = require('../../utils')
+const { getPlasmaClient, from, plasma } = require('../utils')
 
-var transactionHash = '0xbbaf7712bc426b665650992215f9c15ac9bda72bbb4e7d453ba9ed3875e0ebf5' // Insert txHash generated from initiate-withdraw.js
-
-async function execute() {
-  const { matic } = await getMaticPlasmaClient()
-
-  await matic
-    .withdraw(transactionHash, {
-      from,
-    })
-    .then(result => {
-      console.log(result)
-    })
+async function execute () {
+  const plasmaClient = await getPlasmaClient()
+  const erc20Token = plasmaClient.erc20(plasma.parent.erc20, true)
+  const result = await erc20Token.withdrawExit()
+  const txHash = await result.getTransactionHash()
+  const txReceipt = await result.getReceipt()
+  console.log(txReceipt)
 }
 
 execute().then(_ => {

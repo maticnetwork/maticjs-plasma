@@ -1,11 +1,11 @@
 const { getPlasmaClient, plasma, from } = require('../utils')
 
-const token = plasma.child.erc721
-const tokenId721 = 1963
+const token = plasma.parent.erc721
+const tokenId721 = '2'
 async function execute () {
   const plasmaClient = await getPlasmaClient()
-  const erc721Token = plasmaClient.erc721(token)
-  const result = await erc721Token.withdrawStart(tokenId721)
+  const erc721RootToken = plasmaClient.erc721(token, true)
+  const result = await erc721RootToken.safeDeposit(tokenId721, from)
   const txHash = await result.getTransactionHash()
   const txReceipt = await result.getReceipt()
   console.log(txReceipt)
@@ -13,7 +13,6 @@ async function execute () {
 
 execute()
   .then(console.log)
-  .catch(console.log)
-  .finally(_ => {
+  .then(_ => {
     process.exit(0)
   })

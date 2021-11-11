@@ -1,18 +1,16 @@
-const {  plasma } = require('../../config');
-const { getPlasmaClient, from } = require('../../utils');
+const { getPlasmaClient, from, plasma } = require('../utils')
 
 const execute = async () => {
-    const client = await getPlasmaClient();
-    const erc720Token = client.erc20(plasma.parent.erc20, true);
+  const plasmaClient = await getPlasmaClient()
+  const erc20Token = plasmaClient.erc20(plasma.parent.erc20, true)
 
-    const result = await erc720Token.getAllowance(from);
+  const result = await erc20Token.getAllowance(from)
 
-    console.log("result", result);
-
+  console.log('result', result)
 }
 execute().then(() => {
 }).catch(err => {
-    console.error("err", err);
+  console.error('err', err)
 }).finally(_ => {
-    process.exit(0);
+  process.exit(0)
 })

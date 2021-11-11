@@ -1,22 +1,19 @@
-const { getMaticPlasmaClient, from, plasma, to } = require('../../utils')
+const { getPlasmaClient, from, plasma, to } = require('../utils')
 
-const tokenId = '2' // amount in wei
-const token = plasma.child.erc721
-const recipient = to
-async function execute() {
-  const { matic } = await getMaticPlasmaClient()
+const tokenId721 = '2'
 
-  await matic
-    .transferERC721Tokens(token, recipient, tokenId, {
-      from,
-      // parent: true, // For token transfer on Main network (false for Matic Network)
-    })
-    .then(result => {
-      console.log('hash', result) // eslint-disable-line
-    })
-    .catch(console.log)
+const execute = async () => {
+  const plasmaClient = await getPlasmaClient()
+  const erc721Token = plasmaClient.erc721(plasma.child.erc721)
+
+  // transfer token
+  const result = await erc721Token.transfer(tokenId721, from, to)
+  console.log(await result.getReceipt())
 }
 
-execute().then(_ => {
+execute().then(() => {
+}).catch(err => {
+  console.error('err', err)
+}).finally(_ => {
   process.exit(0)
 })

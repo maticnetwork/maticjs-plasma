@@ -14,7 +14,7 @@ module.exports = {
             erc721: '0xfA08B72137eF907dEB3F202a60EfBc610D2f224b',
         },
         child: {
-            erc20: '0x2d7882beDcbfDDce29Ba99965dd3cdF7fcB10A1e',
+            erc20: '0xfe4f5145f6e09952a5ba9e956ed0c25e3fa4c7f1',
             erc721: '0x33FC58F12A56280503b04AC7911D1EceEBcE179c',
         },
         registryAddress: '0x56B082d0a590A7ce5d170402D6f7f88B58F71988',

@@ -4,9 +4,9 @@ const execute = async () => {
   const plasmaClient = await getPlasmaClient()
   const erc721Token = plasmaClient.erc721(plasma.child.erc721)
 
-  // get 5 tokens of the user
-  const balance = await erc721Token.getAllTokens(from)
-  console.log(balance)
+  // get token at index 2
+  const token = await erc721Token.getTokenIdAtIndexForUser(2, from)
+  console.log(token)
 }
 
 execute().then(() => {
