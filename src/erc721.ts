@@ -103,8 +103,8 @@ export class ERC721 extends PlasmaToken {
     }
 
 
-    private withdrawChallenge_(burnTxHash: string, isFast: boolean, option: ITransactionOption) {
-        this.checkForRoot("withdrawChallenge");
+    private withdrawConfirm_(burnTxHash: string, isFast: boolean, option: ITransactionOption) {
+        this.checkForRoot("withdrawConfirm");
 
         return Promise.all([
             this.getPredicate(),
@@ -124,12 +124,12 @@ export class ERC721 extends PlasmaToken {
         });
     }
 
-    withdrawChallenge(burnTxHash: string, option?: ITransactionOption) {
-        return this.withdrawChallenge_(burnTxHash, false, option);
+    withdrawConfirm(burnTxHash: string, option?: ITransactionOption) {
+        return this.withdrawConfirm_(burnTxHash, false, option);
     }
 
-    withdrawChallengeFaster(burnTxHash: string, option?: ITransactionOption) {
-        return this.withdrawChallenge_(burnTxHash, true, option);
+    withdrawConfirmFaster(burnTxHash: string, option?: ITransactionOption) {
+        return this.withdrawConfirm_(burnTxHash, true, option);
     }
 
     transfer(tokenId: string, from: string, to: string, option?: ITransactionOption) {

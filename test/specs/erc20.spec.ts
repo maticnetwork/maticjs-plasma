@@ -106,8 +106,8 @@ describe('ERC20', () => {
         expect(result['to'].toLowerCase()).equal(depositManager.toLowerCase());
     });
 
-    it('withdrawChallenge return tx', async () => {
-        const result = await erc20Parent.withdrawChallenge('0x95a6fd305456db15c431c5c4f082cf233cfeb0d4039bcf1d4cd713796fae0d2f', {
+    it('withdrawConfirm return tx', async () => {
+        const result = await erc20Parent.withdrawConfirm('0x95a6fd305456db15c431c5c4f082cf233cfeb0d4039bcf1d4cd713796fae0d2f', {
             returnTransaction: true
         });
 
@@ -115,9 +115,9 @@ describe('ERC20', () => {
         expect(result['to'].toLowerCase()).equal(erc20Predicate.toLowerCase());
     });
 
-    it('withdrawChallengeFaster return tx', async () => {
+    it('withdrawConfirmFaster return tx', async () => {
         setProofApi("https://apis.matic.network");
-        const result = await erc20Parent.withdrawChallengeFaster('0x95a6fd305456db15c431c5c4f082cf233cfeb0d4039bcf1d4cd713796fae0d2f', {
+        const result = await erc20Parent.withdrawConfirmFaster('0x95a6fd305456db15c431c5c4f082cf233cfeb0d4039bcf1d4cd713796fae0d2f', {
             returnTransaction: true
         });
 
