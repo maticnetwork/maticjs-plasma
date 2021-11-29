@@ -1,6 +1,6 @@
 {
   "name": "@maticnetwork/maticjs-plasma",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "description": "Plasma bridge plugin for maticjs. It provides PlasmaClient to interact with plasma bridge.",
   "main": "dist/npm.export.js",
   "types": "dist/ts/index.d.ts",
