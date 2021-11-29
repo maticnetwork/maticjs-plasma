@@ -3,17 +3,22 @@ const { Web3ClientPlugin } = require("@maticnetwork/maticjs-web3");
 const { PlasmaClient } = require("@maticnetwork/maticjs-plasma");
 
 const HDWalletProvider = require("@truffle/hdwallet-provider");
-const { user1, rpc, plasma } = require("./config");
+const { user1, rpc, plasma, user2 } = require("./config");
 use(Web3ClientPlugin);
 const from = user1.address;
+const to = user2.address;
 
 const execute = async () => {
   const privateKey = user1.privateKey;
   const mumbaiERC20 = plasma.child.erc20;
   const goerliERC20 = plasma.parent.erc20;
   const goerliERC721 = plasma.parent.erc721;
+  const mumbaiERC721 = plasma.child.erc721;
 
-  const client = new PlasmaClient({
+  const client = new PlasmaClient();
+
+
+  await client.init({
     log: true,
     network: 'testnet',
     version: 'mumbai',
@@ -30,14 +35,14 @@ const execute = async () => {
       }
     }
   });
-
-
-  await client.init();
   console.log("init called");
 
   const mumbaiERC20Token = client.erc20(mumbaiERC20);
   const goerliERC20Token = client.erc20(goerliERC20, true);
   const goerliERC721Token = client.erc721(goerliERC721, true);
+  const mumbaiERC721Token = client.erc721(mumbaiERC721);
+
+
 
   // return console.log(await goerliERC721Token.getAllTokens(from));
 
@@ -54,14 +59,14 @@ const execute = async () => {
   // );
   // return console.log("tokens", tokens);
 
-  const tx = await goerliERC721Token.safeDeposit(701, from, {
+  const tx = await mumbaiERC721Token.transfer(700, to, from, {
     // returnTransaction: true
   });
   console.log('tx', tx);
   // // setProofApi("https://apis.matic.network")
   // const tx = await goerliERC20Token.approveMax();
   console.log("txHash", await tx.getTransactionHash());
- return console.log("txReceipt", await tx.getReceipt());
+  return console.log("txReceipt", await tx.getReceipt());
 
   //txhash to plasma exit - 0x63aa095e0d6ee8698399b871daa202eb5522933e2d94c5929cf0fb86b6b0c628
   const tokenId = '60399350241383852757821046101235634991156913804166740995010931519407953501076'

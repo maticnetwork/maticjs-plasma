@@ -13,7 +13,6 @@ describe('ERC20', () => {
 
     before(() => {
         return Promise.all([
-            plasmaClient.init(),
             abiManager.init()
         ]);
     });
@@ -53,7 +52,7 @@ describe('ERC20', () => {
         console.log('result', result);
         expect(result).to.have.not.property('maxFeePerGas')
         expect(result).to.have.not.property('maxPriorityFeePerGas')
-        expect(result).to.have.property('gasPrice')
+        // expect(result).to.have.property('gasPrice')
         expect(result).to.have.property('chainId', 80001);
     });
 
@@ -174,7 +173,6 @@ describe('ERC20', () => {
         )
 
         //transfer money back to user
-        await plasmaClientTo.init();
         const erc20ChildToken = plasmaClientTo.erc20(erc20.child);
 
         result = await erc20ChildToken.transfer(amount, to);

@@ -5,7 +5,6 @@ use(Web3ClientPlugin);
 
 console.log('process.env.NODE_ENV', process.env.NODE_ENV);
 
-
+import './plasma_bridge'
 import './erc20.spec'
 import './erc721.spec'
-// import './pos_bridge'

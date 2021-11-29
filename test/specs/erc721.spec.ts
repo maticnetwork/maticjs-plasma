@@ -13,7 +13,6 @@ describe('ERC721', () => {
 
     before(() => {
         return Promise.all([
-            plasmaClient.init(),
             abiManager.init()
         ]);
     });
@@ -113,7 +112,6 @@ describe('ERC721', () => {
         console.log('newAllTokensTo', newAllTokensTo);
         expect(newAllTokensTo.length).equal(allTokensTo.length + 1);
 
-        await plasmaClientTo.init();
 
         const erc721ChildToken = plasmaClientTo.erc721(erc721.child);
 

@@ -12,16 +12,10 @@ export class PlasmaClient extends BridgeClient<IPlasmaClientConfig> {
     depositManager: DepositManager;
     registry: RegistryContract;
 
-
-    constructor(config: IPlasmaClientConfig) {
-        super(config);
-    }
-
-    init() {
+    init(config: IPlasmaClientConfig) {
         const client = this.client;
-        let config: IPlasmaClientConfig = client.config;
 
-        return client.init().then(_ => {
+        return client.init(config).then(_ => {
             const mainContracts = client.mainPlasmaContracts;
             client.config = config = Object.assign(
                 {
