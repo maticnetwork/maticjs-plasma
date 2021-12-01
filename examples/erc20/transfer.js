@@ -10,7 +10,7 @@ async function execute () {
     const erc20Token = plasmaClient.erc20(token)
     const result = await erc20Token.transfer(amount, to, { gasPrice: 1000000000 })
     const txHash = await result.getTransactionHash()
-    console.log(result)
+    console.log(txHash)
   } catch (error) {
     console.log(error)
   }

@@ -1,7 +1,7 @@
 import { erc20, from, plasmaClient, plasmaClientTo, to } from "./client";
 import { expect } from 'chai'
 import BN from "bn.js";
-import { setProofApi, ABIManager } from "@maticnetwork/maticjs";
+import { setProofApi, ABIManager, Converter } from "@maticnetwork/maticjs";
 
 
 describe('ERC20', () => {
@@ -54,6 +54,20 @@ describe('ERC20', () => {
         expect(result).to.have.not.property('maxPriorityFeePerGas')
         // expect(result).to.have.property('gasPrice')
         expect(result).to.have.property('chainId', 80001);
+        expect(result).to.have.property('data');
+    });
+
+    it('child transfer matic returnTransaction', async () => {
+        const amount = 10;
+        const maticToken = plasmaClient.erc20(null);
+        const result = await maticToken.transfer(amount, to, {
+            returnTransaction: true
+        });
+        expect(result).to.have.not.property('data')
+        expect(result).to.have.property('chainId', 80001);
+        expect(result).to.have.property('value', Converter.toHex(amount));
+        expect(result).to.have.property('from', from);
+        expect(result).to.have.property('to', to);
     });
 
     it('parent transfer returnTransaction with erp1159', async () => {

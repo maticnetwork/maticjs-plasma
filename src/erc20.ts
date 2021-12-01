@@ -148,6 +148,8 @@ export class ERC20 extends PlasmaToken {
     transfer(amount: TYPE_AMOUNT, to: string, option: ITransactionOption = {}) {
         if (this.contractParam.address === MATIC_TOKEN_ADDRESS_ON_POLYGON) {
             option.to = to;
+            option.value = Converter.toHex(amount);
+            return this.sendTransaction(option);
         }
         return this.transferERC20(to, amount, option);
     }
