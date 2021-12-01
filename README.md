@@ -9,9 +9,13 @@ Plasma bridge plugin for maticjs. It provides PlasmaClient to interact with plas
 npm i @maticnetwork/maticjs-plasma
 ```
 
+# Examples
+
+All the examples are in examples folder of this repo.
+
 # Docs
 
-https://maticnetwork.github.io/matic.js/v3/docs/plasma/
+https://maticnetwork.github.io/matic.js/docs/plasma/
 
 
 
