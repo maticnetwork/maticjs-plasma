@@ -13,7 +13,8 @@ const from = config.user1.address
 
 async function getPlasmaClient (network = 'testnet', version = 'mumbai') {
   try {
-    const plasmaClient = new PlasmaClient({
+    const plasmaClient = new PlasmaClient()
+    return plasmaClient.init({
       network: network,
       version: version,
       parent: {
@@ -29,7 +30,6 @@ async function getPlasmaClient (network = 'testnet', version = 'mumbai') {
         }
       }
     })
-    return plasmaClient.init()
   } catch (error) {
     console.error('error unable to initiate plasmaClient', error)
   }
