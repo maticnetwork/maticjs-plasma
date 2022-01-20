@@ -44,19 +44,23 @@ const execute = async () => {
 
 
 
-  const maticToken = client.erc20(null);
+  const maticToken = client.erc20(plasma.parent.matic, true);
 
-  const user1MaticBalance = await maticToken.getBalance(from);
-  console.log('user1Maticbalance', user1MaticBalance);
+  // const user1MaticBalance = await maticToken.getBalance(from);
+  // console.log('user1Maticbalance', user1MaticBalance);
 
-  const user2MaticBalance = await maticToken.getBalance(to);
-  console.log('user2MaticBalance', user2MaticBalance);
+  // const user2MaticBalance = await maticToken.getBalance(to);
+  // console.log('user2MaticBalance', user2MaticBalance);
 
-
-  const result = await maticToken.transfer(10000000, to, { returnTransaction: true, gasPrice: 1000000000 })
-  console.log('result', result);
-  // const txHash = await result.getTransactionHash();
-  // console.log(txHash)
+  console.log('isMaticToken', maticToken.isMaticToken);
+  const result = await maticToken.deposit(10000000, from, {
+    returnTransaction: true
+  })
+  return console.log('result', result);
+  const txHash = await result.getTransactionHash();
+  console.log(txHash)
+  const txReceipt = await result.getReceipt();
+  console.log(txReceipt)
 }
 
 execute().then(_ => {

@@ -11,10 +11,13 @@ export class ERC20 extends PlasmaToken {
         client: Web3SideChainClient<IPlasmaClientConfig>,
         contracts: () => IPlasmaContracts
     ) {
+        const isMaticToken = tokenAddress === MATIC_TOKEN_ADDRESS_ON_POLYGON;
+        const contractIdentifier = isMaticToken ?
+            'MRC20' : 'ChildERC20';
         super({
             isParent,
             address: tokenAddress,
-            name: 'ChildERC20'
+            name: contractIdentifier
         }, client, contracts);
     }
 
@@ -104,10 +107,12 @@ export class ERC20 extends PlasmaToken {
         });
     }
 
-    withdrawStart(amount: TYPE_AMOUNT, option?: ITransactionOption) {
+    withdrawStart(amount: TYPE_AMOUNT, option: ITransactionOption = {}) {
         this.checkForChild("withdrawStart");
 
-
+        if (this.contractParam.address === MATIC_TOKEN_ADDRESS_ON_POLYGON) {
+            option.value = Converter.toHex(amount);
+        }
         return this.getContract().then(tokenContract => {
             const method = tokenContract.method(
                 "withdraw",

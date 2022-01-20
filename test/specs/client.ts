@@ -9,7 +9,9 @@ export const toPrivateKey = user2.privateKey;
 
 export const erc20 = {
     parent: plasma.parent.erc20,
-    child: plasma.child.erc20
+    child: plasma.child.erc20,
+    matic: plasma.parent.matic,
+    maticChild: plasma.child.matic
 }
 export const erc721 = {
     parent: plasma.parent.erc721,
