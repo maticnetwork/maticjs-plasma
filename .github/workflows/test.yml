@@ -10,6 +10,9 @@ on:
   pull_request:
     branches: [ main ]
 
+  schedule:
+    - cron: "0 0 * * 3"
+
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
   
@@ -36,10 +39,13 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: INSTALL
-        run: npm ci
+        run: !
+          npm ci
+          npm i @maticnetwork/maticjs@latest
 
       # Runs a set of commands using the runners shell
       - name: TEST
         run: |
           # echo "$USER1_FROM",
           npm run test:ci
+          
