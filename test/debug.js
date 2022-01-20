@@ -52,11 +52,10 @@ const execute = async () => {
   // const user2MaticBalance = await maticToken.getBalance(to);
   // console.log('user2MaticBalance', user2MaticBalance);
 
-  console.log('isMaticToken', maticToken.isMaticToken);
-  const result = await maticToken.deposit(10000000, from, {
-    returnTransaction: true
+  const result = await maticToken.approveMax({
+    // returnTransaction: true
   })
-  return console.log('result', result);
+  // return console.log('result', result);
   const txHash = await result.getTransactionHash();
   console.log(txHash)
   const txReceipt = await result.getReceipt();

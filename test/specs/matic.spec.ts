@@ -60,24 +60,24 @@ describe('MATIC', () => {
         expect(result).to.have.property('to', to);
     });
 
-    // it('parent transfer returnTransaction with erp1159', async () => {
-    //     const amount = 10;
-    //     const result = await erc20Parent.transfer(amount, to, {
-    //         maxFeePerGas: 20,
-    //         maxPriorityFeePerGas: 20,
-    //         returnTransaction: true
-    //     });
-    //     console.log('result', result);
+    it('parent transfer returnTransaction with erp1159', async () => {
+        const amount = 10;
+        const result = await erc20Parent.transfer(amount, to, {
+            maxFeePerGas: 20,
+            maxPriorityFeePerGas: 20,
+            returnTransaction: true
+        });
+        console.log('result', result);
 
-    //     expect(result).to.have.property('maxFeePerGas', 20)
-    //     expect(result).to.have.property('maxPriorityFeePerGas', 20)
-    //     expect(result).to.have.not.property('gasPrice')
-    //     expect(result).to.have.property('chainId', 5);
+        expect(result).to.have.property('maxFeePerGas', 20)
+        expect(result).to.have.property('maxPriorityFeePerGas', 20)
+        expect(result).to.have.not.property('gasPrice')
+        expect(result).to.have.property('chainId', 5);
 
-    // });
+    });
 
     it('isDeposited', async () => {
-        const txHash = '0xc3245a99dfbf2cf91d92ad535de9ee828208f0be3c0e101cba14d88e7849ed01';
+        const txHash = '0xccbc00bea5c0773abddc2e220efab71b25b6b8d1efdfd5418025cf852ce30cf3';
         const isExited = await plasmaClient.isDeposited(txHash);
         expect(isExited).to.be.an('boolean').equal(true);
     })
@@ -101,14 +101,14 @@ describe('MATIC', () => {
 
     });
 
-    // it('deposit return tx', async () => {
-    //     const result = await erc20Parent.deposit(10, from, {
-    //         returnTransaction: true
-    //     });
+    it('deposit return tx', async () => {
+        const result = await erc20Parent.deposit(10, from, {
+            returnTransaction: true
+        });
 
-    //     const depositManager = await abiManager.getConfig("Main.Contracts.DepositManagerProxy")
-    //     expect(result['to'].toLowerCase()).equal(depositManager.toLowerCase());
-    // });
+        const depositManager = await abiManager.getConfig("Main.Contracts.DepositManagerProxy")
+        expect(result['to'].toLowerCase()).equal(depositManager.toLowerCase());
+    });
 
     it('withdrawConfirm return tx', async () => {
         const result = await erc20Parent.withdrawConfirm('0x04495c5507293a9583e0e1249b0f2b981eebbe475b3e7b19bd754f72ea7d2a18', {
