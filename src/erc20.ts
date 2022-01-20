@@ -1,5 +1,6 @@
-import { TYPE_AMOUNT, Log_Event_Signature, Converter, Web3SideChainClient, ITransactionOption, MAX_AMOUNT } from "@maticnetwork/maticjs";
+import { TYPE_AMOUNT, Converter, Web3SideChainClient, ITransactionOption, MAX_AMOUNT } from "@maticnetwork/maticjs";
 import { MATIC_TOKEN_ADDRESS_ON_POLYGON } from "./constant";
+import { Plasma_Log_Event_Signature } from "./enums";
 import { IPlasmaClientConfig, IPlasmaContracts } from "./interfaces";
 import { PlasmaToken } from "./plasma_token";
 
@@ -129,7 +130,7 @@ export class ERC20 extends PlasmaToken {
             this.getPredicate(),
             this.getHelperContracts().exitUtil.buildPayloadForExit(
                 burnTxHash,
-                Log_Event_Signature.PlasmaErc20WithdrawEventSig,
+                Plasma_Log_Event_Signature.Erc20WithdrawEventSig,
                 isFast
             )
         ]).then(result => {

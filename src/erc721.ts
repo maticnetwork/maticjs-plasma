@@ -1,4 +1,5 @@
-import { Converter, ITransactionOption, Log_Event_Signature, Web3SideChainClient } from "@maticnetwork/maticjs";
+import { Converter, ITransactionOption, Web3SideChainClient } from "@maticnetwork/maticjs";
+import { Plasma_Log_Event_Signature } from "./enums";
 import { IPlasmaClientConfig, IPlasmaContracts } from "./interfaces";
 import { PlasmaToken } from "./plasma_token";
 
@@ -110,7 +111,7 @@ export class ERC721 extends PlasmaToken {
             this.getPredicate(),
             this.getHelperContracts().exitUtil.buildPayloadForExit(
                 burnTxHash,
-                Log_Event_Signature.PlasmaErc721WithdrawEventSig,
+                Plasma_Log_Event_Signature.Erc721WithdrawEventSig,
                 isFast
             )
         ]).then(result => {

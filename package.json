@@ -35,7 +35,7 @@
     "@maticnetwork/maticjs": "^3.0.0"
   },
   "devDependencies": {
-    "@maticnetwork/maticjs": "^3.0.0",
+    "@maticnetwork/maticjs": "^3.2.0",
     "copy-webpack-plugin": "^6.1.1",
     "cross-env": "^7.0.3",
     "smart-banner-webpack-plugin": "^3.0.1",
