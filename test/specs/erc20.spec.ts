@@ -33,8 +33,14 @@ describe('ERC20', () => {
         expect(Number(balance)).gte(0);
     })
 
-    it('get allowance', async () => {
+    it('get allowance parent', async () => {
         const allowance = await erc20Parent.getAllowance(from);
+        expect(allowance).to.be.an('string');
+        expect(Number(allowance)).gte(0);
+    })
+
+    it('get allowance child', async () => {
+        const allowance = await erc20Child.getAllowance(from);
         expect(allowance).to.be.an('string');
         expect(Number(allowance)).gte(0);
     })
@@ -109,6 +115,34 @@ describe('ERC20', () => {
         expect(result).to.have.property('data')
 
     });
+
+    it('approve parent return tx with spender address', async () => {
+        const spenderAddress = await plasmaClient.depositManager.address;
+
+        const result = await erc20Parent.approve('10', {
+            spenderAddress: spenderAddress,
+            returnTransaction: true
+        });
+
+        expect(result['to'].toLowerCase()).equal(erc20.parent.toLowerCase());
+        expect(result).to.have.property('data')
+
+    });
+
+    it('approve child return tx without spender address', async () => {
+        try {
+            const result = await erc20Child.approve('10');
+            expect(result['to'].toLowerCase()).equal(erc20.child.toLowerCase());
+            expect(result).to.have.property('data');
+        } catch (error) {
+            // console.log('error', error);
+            expect(error).eql({
+                type: 'null_spender_address',
+                message: 'Please provide spender address.'
+            });
+        }
+    });
+
 
     it('deposit return tx', async () => {
         const result = await erc20Parent.deposit(10, from, {

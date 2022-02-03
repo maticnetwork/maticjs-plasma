@@ -1,4 +1,4 @@
-import { TYPE_AMOUNT, Converter, Web3SideChainClient, ITransactionOption, MAX_AMOUNT } from "@maticnetwork/maticjs";
+import { TYPE_AMOUNT, Converter, Web3SideChainClient, ITransactionOption, MAX_AMOUNT, IApproveTransactionOption, ERROR_TYPE, IAllowanceTransactionOption } from "@maticnetwork/maticjs";
 import { MATIC_TOKEN_ADDRESS_ON_POLYGON } from "./constant";
 import { Plasma_Log_Event_Signature } from "./enums";
 import { IPlasmaClientConfig, IPlasmaContracts } from "./interfaces";
@@ -49,25 +49,30 @@ export class ERC20 extends PlasmaToken {
      * @returns
      * @memberof ERC20
      */
-    getAllowance(userAddress: string, option?: ITransactionOption) {
-        this.checkForRoot("getAllowance");
+    getAllowance(userAddress: string, option: IAllowanceTransactionOption = {}) {
+        const spenderAddress = option.spenderAddress;
 
         return this.getContract().then(contract => {
             const method = contract.method(
                 "allowance",
                 userAddress,
-                this.getHelperContracts().depositManager.address,
+                spenderAddress || this.getHelperContracts().depositManager.address,
             );
             return this.processRead<string>(method, option);
         });
     }
 
-    approve(amount: TYPE_AMOUNT, option: ITransactionOption = {}) {
-        this.checkForRoot("approve");
+    approve(amount: TYPE_AMOUNT, option: IApproveTransactionOption = {}) {
+        const spenderAddress = option.spenderAddress;
+
+        if (!spenderAddress && !this.contractParam.isParent) {
+            this.client.logger.error(ERROR_TYPE.NullSpenderAddress).throw();
+        }
+
         return this.getContract().then(contract => {
             const method = contract.method(
                 "approve",
-                this.getHelperContracts().depositManager.address,
+                spenderAddress || this.getHelperContracts().depositManager.address,
                 Converter.toHex(amount)
             );
             return this.processWrite(method, option);
