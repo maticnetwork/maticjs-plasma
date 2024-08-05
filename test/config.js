@@ -1,8 +1,8 @@
-// const dotenv = require('dotenv');
-// const path = require('path');
-// const env = dotenv.config({
-//     path: path.join(__dirname, '.env')
-// });
+const dotenv = require('dotenv');
+const path = require('path');
+const env = dotenv.config({
+    path: path.join(__dirname, '.env')
+});
 module.exports = {
     rpc: {
         parent: process.env.ROOT_RPC,
@@ -12,7 +12,7 @@ module.exports = {
         parent: {
             erc20: '0x3f152B63Ec5CA5831061B2DccFb29a874C317502',
             erc721: '0xfA08B72137eF907dEB3F202a60EfBc610D2f224b',
-            matic:'0x499d11E0b6eAC7c0593d8Fb292DCBbF815Fb29Ae'
+            matic:'0x3fd0A53F4Bf853985a95F4Eb3F9C9FDE1F8e2b53'
         },
         child: {
             erc20: '0xfe4f5145f6e09952a5ba9e956ed0c25e3fa4c7f1',
