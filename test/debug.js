@@ -7,14 +7,9 @@ const { PlasmaClient } = require("@maticnetwork/maticjs-plasma");
 const HDWalletProvider = require("@truffle/hdwallet-provider");
 use(Web3ClientPlugin);
 const from = user1.address;
-const to = user2.address;
 
 const execute = async () => {
   const privateKey = user1.privateKey;
-  const mumbaiERC20 = plasma.child.erc20;
-  const goerliERC20 = plasma.parent.erc20;
-  const goerliERC721 = plasma.parent.erc721;
-  const mumbaiERC721 = plasma.child.erc721;
 
   const client = new PlasmaClient();
 
@@ -35,14 +30,6 @@ const execute = async () => {
       }
     }
   });
-  console.log("init called", client.client.parent);
-
-  const mumbaiERC20Token = client.erc20(mumbaiERC20);
-  const goerliERC20Token = client.erc20(goerliERC20, true);
-  const goerliERC721Token = client.erc721(goerliERC721, true);
-  const mumbaiERC721Token = client.erc721(mumbaiERC721);
-
-
 
   const maticToken = client.erc20(plasma.parent.matic, true);
   // console.log(maticToken)

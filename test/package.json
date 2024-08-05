@@ -7,11 +7,7 @@
     "link:lib": "npm link @maticnetwork/maticjs-plasma",
     "debug": "node debug.js",
     "un:lib": "npm un @maticnetwork/maticjs",
-    "link:lib:debug": "npm run link:lib && npm run debug",
-    "test": "cross-env NODE_ENV=test npm run karma:start:dotenv",
-    "test:ci": "cross-env NODE_ENV=test npm run karma:start",
-    "test:all": "cross-env NODE_ENV=test_all npm run karma:start",
-    "test:mocha": "cross-env-file -p ./config.json cross-env NODE_ENV=test mochapack --webpack-config ./webpack.config.test.js --colors ./specs/index.ts"
+    "link:lib:debug": "npm run link:lib && npm run debug"
   },
   "author": "",
   "license": "ISC",
@@ -25,10 +21,9 @@
     "webpack-cli": "^4.2.0"
   },
   "dependencies": {
-    "@maticnetwork/maticjs-plasma": "1.0.4",
+    "@maticnetwork/maticjs-plasma": "1.1.0",
     "@maticnetwork/maticjs-web3": "^1.0.4",
     "@truffle/hdwallet-provider": "^1.5.1-alpha.1",
-    "mochapack": "^2.1.2",
-    "web3": "^1.8.0"
+    "mochapack": "^2.1.2"
   }
 }

@@ -1,12 +1,11 @@
 {
   "name": "@maticnetwork/maticjs-plasma",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "description": "Plasma bridge plugin for maticjs. It provides PlasmaClient to interact with plasma bridge.",
   "main": "dist/npm.export.js",
   "types": "dist/ts/index.d.ts",
   "scripts": {
     "clean": "rm -rf dist",
-    "build": "tsc",
     "link:lib": "npm link @maticnetwork/maticjs",
     "build:link": "webpack && npm link",
     "build:dev": "webpack",
@@ -15,8 +14,6 @@
     "prepublishOnly": "npm run deploy",
     "lint": "tslint src/**/*.ts",
     "lint:fix": "tslint src/**/*.ts --fix",
-    "build:test": "npm run build:link && npm run test",
-    "test": "cd test && npm run link:lib:test",
     "debug": "webpack && cd test && npm run link:lib:debug"
   },
   "repository": {
@@ -30,7 +27,7 @@
   },
   "homepage": "https://github.com/maticnetwork/maticjs-plasma#readme",
   "peerDependencies": {
-    "@maticnetwork/maticjs": "^3.8.2"
+    "@maticnetwork/maticjs": "^3.9.0"
   },
   "devDependencies": {
     "copy-webpack-plugin": "^12.0.2",
