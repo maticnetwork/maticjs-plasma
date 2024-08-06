@@ -1,27 +1,22 @@
+const { user1, rpc, plasma, user2 } = require("./config");
+
 const { use } = require("@maticnetwork/maticjs");
 const { Web3ClientPlugin } = require("@maticnetwork/maticjs-web3");
 const { PlasmaClient } = require("@maticnetwork/maticjs-plasma");
 
 const HDWalletProvider = require("@truffle/hdwallet-provider");
-const { user1, rpc, plasma, user2 } = require("./config");
 use(Web3ClientPlugin);
 const from = user1.address;
-const to = user2.address;
 
 const execute = async () => {
   const privateKey = user1.privateKey;
-  const mumbaiERC20 = plasma.child.erc20;
-  const goerliERC20 = plasma.parent.erc20;
-  const goerliERC721 = plasma.parent.erc721;
-  const mumbaiERC721 = plasma.child.erc721;
 
   const client = new PlasmaClient();
-
 
   await client.init({
     log: true,
     network: 'testnet',
-    version: 'mumbai',
+    version: 'amoy',
     parent: {
       provider: new HDWalletProvider(privateKey, rpc.parent),
       defaultConfig: {
@@ -35,17 +30,9 @@ const execute = async () => {
       }
     }
   });
-  console.log("init called");
-
-  const mumbaiERC20Token = client.erc20(mumbaiERC20);
-  const goerliERC20Token = client.erc20(goerliERC20, true);
-  const goerliERC721Token = client.erc721(goerliERC721, true);
-  const mumbaiERC721Token = client.erc721(mumbaiERC721);
-
-
 
   const maticToken = client.erc20(plasma.parent.matic, true);
-
+  // console.log(maticToken)
   // const user1MaticBalance = await maticToken.getBalance(from);
   // console.log('user1Maticbalance', user1MaticBalance);
 

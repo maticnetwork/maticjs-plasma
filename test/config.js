@@ -1,28 +1,24 @@
-// const dotenv = require('dotenv');
-// const path = require('path');
-// const env = dotenv.config({
-//     path: path.join(__dirname, '.env')
-// });
+const dotenv = require('dotenv');
+const path = require('path');
+const env = dotenv.config({
+    path: path.join(__dirname, '.env')
+});
 module.exports = {
     rpc: {
         parent: process.env.ROOT_RPC,
-        child: process.env.MATIC_RPC || 'https://rpc-mumbai.matic.today',
+        child: process.env.MATIC_RPC || 'https://rpc-amoy.polygon.technology',
     },
     plasma: {
         parent: {
-            erc20: '0x3f152B63Ec5CA5831061B2DccFb29a874C317502',
-            erc721: '0xfA08B72137eF907dEB3F202a60EfBc610D2f224b',
-            matic:'0x499d11E0b6eAC7c0593d8Fb292DCBbF815Fb29Ae'
+            matic:'0x3fd0A53F4Bf853985a95F4Eb3F9C9FDE1F8e2b53'
         },
         child: {
-            erc20: '0xfe4f5145f6e09952a5ba9e956ed0c25e3fa4c7f1',
-            erc721: '0x33FC58F12A56280503b04AC7911D1EceEBcE179c',
             matic:'0x0000000000000000000000000000000000001010'
         },
-        registryAddress: '0x56B082d0a590A7ce5d170402D6f7f88B58F71988',
-        rootChainAddress: '0x82a72315E16cE224f28E1F1fB97856d3bF83f010', // The address for the main Plasma contract in  Ropsten testnet
-        withdrawManagerAddress: '0x3cf9aD3395028a42EAfc949e2EC4588396b8A7D4', // An address for the WithdrawManager contract on Ropsten testnet
-        depositManagerAddress: '0x3Bc6701cA1C32BBaC8D1ffA2294EE3444Ad93989', // An address for a DepositManager contract in Ropsten testnet
+        registryAddress: '0xfE92F7c3a701e43d8479738c8844bCc555b9e5CD',
+        rootChainAddress: '0xbd07D7E1E93c8d4b2a261327F3C28a8EA7167209',
+        withdrawManagerAddress: '0x822db7e79096E7247d9273E5782ecAec464Eb96C',
+        depositManagerAddress: '0x44Ad17990F9128C6d823Ee10dB7F0A5d40a731A4',
     },
     user1: {
         "privateKey": process.env.USER1_PRIVATE_KEY,

@@ -11,7 +11,7 @@ use(Web3ClientPlugin)
 const privateKey = config.user1.privateKey
 const from = config.user1.address
 
-async function getPlasmaClient (network = 'testnet', version = 'mumbai') {
+async function getPlasmaClient (network = 'testnet', version = 'amoy') {
   try {
     const plasmaClient = new PlasmaClient()
     return plasmaClient.init({
