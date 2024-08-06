@@ -27,7 +27,7 @@
   },
   "homepage": "https://github.com/maticnetwork/maticjs-plasma#readme",
   "peerDependencies": {
-    "@maticnetwork/maticjs": "^3.9.0"
+    "@maticnetwork/maticjs": "^3.9.1"
   },
   "devDependencies": {
     "copy-webpack-plugin": "^12.0.2",
